@@ -1,0 +1,4 @@
+# All routes serve index.html (single page app)
+# API routes are handled by /functions/api/*.js — they must come FIRST
+/api/*  /api/:splat  200
+/*      /index.html  200

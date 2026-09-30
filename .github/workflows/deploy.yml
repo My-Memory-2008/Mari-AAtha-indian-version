@@ -1,0 +1,33 @@
+name: Deploy Mari-AAtha → Cloudflare Pages
+
+# Runs on every push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      # 1. Check out your repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Deploy to Cloudflare Pages
+      #    This action uploads your whole repo to Cloudflare Pages.
+      #    The /functions/ folder is automatically detected as Pages Functions (serverless API).
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken:     ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId:    ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName:  mari-aatha        # ← must match exactly what you named the project in Cloudflare
+          directory:    .                 # deploy the repo root (index.html lives here)
+          gitHubToken:  ${{ secrets.GITHUB_TOKEN }}
+          wranglerVersion: '3'
